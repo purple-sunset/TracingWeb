@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Performance App</title>
+</head>
+<body>
+
+<div>
+    <h2>Name</h2>
+    <ul>
+        <li>
+            Available names:
+            <div id="tname">0</div>
+        </li>
+    </ul>
+
+    <h2>Request</h2>
+    <ul>
+        <li>Total request:
+            <div id="trequest">0</div>
+        </li>
+        <li>Request per sec:
+            <div id="reqestps">0</div>
+        </li>
+    </ul>
+</div>
+
+<script src="/jquery-3.2.1.min.js"></script>
+<script>
+    var uri = 'api/performances/get', uri2 ='api/performances/getavail', oldData=0, newData = 0, rps = 0;
+ 
+    function getRps() {
+        $(document).ready(function() {
+            // Send an AJAX request
+            $.getJSON(uri)
+                .done(function(data) {
+                    oldData = newData;
+                    newData = data;
+                    rps = newData - oldData;
+                    $('#trequest').text(newData);
+                    $('#reqestps').text(rps);
+                });
+
+            $.getJSON(uri2)
+                .done(function (data) {
+                    $('#tname').text(data);
+                });
+        });
+		
+        setTimeout( getRps, 1000 );
+    }
+	
+    getRps();
+
+</script>
+</body>
+</html>
